@@ -39,7 +39,7 @@ public class PoolManager<T> : MonoBehaviour where T : Component
 
             for (int i = 0; i < pool.poolSize; i++)
             {
-                T obj = Instantiate(pool.prefab);
+                T obj = Instantiate(pool.prefab, poolObjectHolder.transform);
                 obj.gameObject.SetActive(false);
                 objectPool.Enqueue(obj);
             }

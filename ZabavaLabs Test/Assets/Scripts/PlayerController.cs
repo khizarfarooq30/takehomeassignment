@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
    private PlayerInputs playerInputs;
    private PlayerMovement playerMovement;
+   private PositionResetter positionResetter;
    private Rigidbody2D rb;
 
    private Vector2 moveVector;
@@ -22,12 +23,14 @@ public class PlayerController : MonoBehaviour
       
       playerInputs = GetComponent<PlayerInputs>();
       playerMovement = GetComponent<PlayerMovement>();
+      positionResetter = GetComponent<PositionResetter>();
    }
 
    private void Update()
    {
       playerInputs.HandleInputs(out moveVector);
       playerMovement.HandleRotation();
+      positionResetter.ResetPositionOutOfBounds();
    }
 
    private void FixedUpdate()

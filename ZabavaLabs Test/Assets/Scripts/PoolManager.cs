@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PoolManager<T> : MonoBehaviour where T : Component
 {
@@ -23,12 +24,16 @@ public class PoolManager<T> : MonoBehaviour where T : Component
     #endregion
 
     [SerializeField] private List<Pool<T>> pools;
-   
-    private Dictionary<string, Queue<T>> poolDictionary;
-   
+    private Dictionary<PoolType, Queue<T>> poolDictionary;
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
     private void Start()
     {
-        poolDictionary = new Dictionary<string, Queue<T>>();
+        poolDictionary = new Dictionary<PoolType, Queue<T>>();
       
         GameObject poolObjectHolder = new GameObject("Holder");
         poolObjectHolder.transform.parent = transform;
@@ -44,25 +49,25 @@ public class PoolManager<T> : MonoBehaviour where T : Component
                 objectPool.Enqueue(obj);
             }
          
-            poolDictionary.Add(pool.tag, objectPool);  
+            poolDictionary.Add(pool.poolType, objectPool);  
         }
     }
    
-    public T SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public T SpawnFromPool(PoolType poolType, Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(poolType))
         {
             return null;
         }
       
-        T objectToSpawn = poolDictionary[tag].Dequeue();
+        T objectToSpawn = poolDictionary[poolType].Dequeue();
         objectToSpawn.gameObject.SetActive(true);
 
         var transform1 = objectToSpawn.transform;
         transform1.position = position;
         transform1.rotation = rotation;
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        poolDictionary[poolType].Enqueue(objectToSpawn);
         return objectToSpawn;
     }
 
@@ -76,7 +81,13 @@ public class PoolManager<T> : MonoBehaviour where T : Component
 [Serializable]
 public class Pool<T>
 {
-    public string tag;
+    public PoolType poolType;
     public T prefab;
     public int poolSize;
+}
+
+public enum PoolType
+{
+    Obstacle,
+    Bullet
 }

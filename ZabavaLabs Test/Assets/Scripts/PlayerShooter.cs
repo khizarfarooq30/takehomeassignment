@@ -16,7 +16,7 @@ public class PlayerShooter : MonoBehaviour
     void Shoot()
     {
         bulletPool.SpawnFromPool(
-                "Bullet",
+                PoolType.Bullet,
                 shootPoint.position, 
                 Quaternion.identity)
                 .Shoot(shootPoint.right);

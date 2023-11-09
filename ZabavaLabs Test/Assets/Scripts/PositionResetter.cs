@@ -14,25 +14,27 @@ public class PositionResetter : MonoBehaviour
     {
         // When go out of screen, warp to the other side
         Vector3 pos = transform.position;
-        Vector3 playerPosInScreenSpace = mainCam.WorldToScreenPoint(pos);
+        Vector3 worldToScreenPoint = mainCam.WorldToScreenPoint(pos);
         
-        if (playerPosInScreenSpace.y + offset > Screen.height)
+        Debug.Log(worldToScreenPoint);
+        
+        if (worldToScreenPoint.y > Screen.height + offset)
         {
-            pos.y = -pos.y + 0.5f;
+            pos.y = -pos.y + 0.25f;
 
         }
-        else if (playerPosInScreenSpace.y - offset < 0f)
+        else if (worldToScreenPoint.y < -offset)
         {
-            pos.y = Mathf.Abs(pos.y) - 0.5f;
+            pos.y = Mathf.Abs(pos.y) - 0.25f;
         }
 
-        if(playerPosInScreenSpace.x + offset > Screen.width)
+        if(worldToScreenPoint.x > Screen.width  + offset)
         {
-            pos.x = -pos.x + 0.5f;
+            pos.x = -pos.x + 0.25f;
         }
-        else if (playerPosInScreenSpace.x - offset < 0f)
+        else if (worldToScreenPoint.x <  -offset )
         {
-            pos.x = Mathf.Abs(pos.x) - 0.5f;
+            pos.x = Mathf.Abs(pos.x) - 0.25f;
         }
 
         transform.position = pos;

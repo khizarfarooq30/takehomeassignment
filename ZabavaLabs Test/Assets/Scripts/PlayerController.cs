@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
    private void Update()
    {
       playerInputs.HandleInputs(out moveVector);
-      playerMovement.HandleRotation();
+      playerMovement.HandleRotation(rb, moveVector);
+
       positionResetter.ResetPositionOutOfBounds();
    }
 

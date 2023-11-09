@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 12f;
+    [SerializeField] private float rotationSpeed = 5f;
     
     private Camera mainCam;
 
@@ -13,15 +14,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement(Rigidbody2D rb, Vector2 moveVector)
     {
-        rb.AddForce(moveVector * speed, ForceMode2D.Force);
+        if(moveVector.y > 0f)
+            rb.AddForce(transform.right * speed, ForceMode2D.Force);
     }
 
-    public void HandleRotation()
+    public void HandleRotation(Rigidbody2D rb, Vector2 moveVector)
     {
-        Vector3 dir = mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        // Vector3 dir = mainCam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        // float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.Rotate(-rotationSpeed * Time.deltaTime * moveVector.x * transform.forward);
     }
 
     

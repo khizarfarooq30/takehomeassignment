@@ -3,14 +3,16 @@ using Random = UnityEngine.Random;
 
 public class Obstacle : MonoBehaviour
 {
+    [SerializeField] private PositionResetter positionResetter;
+    [SerializeField] private ObstaclePooler obstaclePooler;
+    
     [SerializeField] private float obstacleDespawVal = 0.4f;
     [SerializeField] private float speed = 2f;
-    [SerializeField] private PositionResetter positionResetter;
 
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
     
-    private PoolManager<Obstacle> obstaclePooler => PoolManager<Obstacle>.instance;
+    private PoolManager<Obstacle> obstaclePoolerManager => PoolManager<Obstacle>.instance;
    
     private Transform playerTransform;
     
@@ -44,9 +46,9 @@ public class Obstacle : MonoBehaviour
         }
         else
         {
-            // reset obstacles scale to random value between 1.25 to 2.5f
             float randomScale = Random.Range(1.25f, 2.5f);
             transform.localScale = Vector3.one * randomScale;
+            obstaclePooler.Remove(this);
             obstaclePooler.Despawn(this);
         } 
     }
@@ -59,10 +61,10 @@ public class Obstacle : MonoBehaviour
         transform.localScale = scale;
         
        Obstacle obstacle = 
-           obstaclePooler.SpawnFromPool("Obstacle", transform.position + 
-                                                     Vector3.right * 0.5f, Quaternion.identity);
+           obstaclePooler.SpawnFromPool(PoolType.Obstacle, transform.position + 
+                                                               Vector3.right * 0.5f, Quaternion.identity);
        obstacle.transform.localScale = transform.localScale;
-       obstacle.directionToMove = -directionToMove;
+       obstacle.directionToMove = directionToMove + directionToMove * 0.5f;
     }
 }
 

@@ -6,10 +6,10 @@ public class PokemonManager : MonoBehaviour
 {
     private const string POKEMON_URL = "https://pokeapi.co/api/v2/pokemon/";
 
+    [SerializeField] private PokemonInfo pokemonInfoTemplate;
     [SerializeField] private RectTransform holder;
     
-    [SerializeField] private PokemonInfo pokemonInfoTemplate;
-    [SerializeField] int minPokemonID = 1;
+    [SerializeField] private int minPokemonID = 1;
     [SerializeField] private int maxPokemonID = 10;
 
     private void Start()

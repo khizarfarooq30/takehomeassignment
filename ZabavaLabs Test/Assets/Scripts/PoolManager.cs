@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PoolManager<T> : MonoBehaviour where T : Component
+{
+    #region singelton
+
+    private static PoolManager<T> _instance;
+
+    public static PoolManager<T> instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<PoolManager<T>>();
+            } 
+            return _instance;
+        }
+    }
+
+    #endregion
+
+    [SerializeField] private List<Pool<T>> pools;
+   
+    private Dictionary<string, Queue<T>> poolDictionary;
+   
+    private void Start()
+    {
+        poolDictionary = new Dictionary<string, Queue<T>>();
+      
+        GameObject poolObjectHolder = new GameObject("Holder");
+        poolObjectHolder.transform.parent = transform;
+      
+        foreach (var pool in pools)
+        {
+            Queue<T> objectPool = new Queue<T>();
+
+            for (int i = 0; i < pool.poolSize; i++)
+            {
+                T obj = Instantiate(pool.prefab);
+                obj.gameObject.SetActive(false);
+                objectPool.Enqueue(obj);
+            }
+         
+            poolDictionary.Add(pool.tag, objectPool);  
+        }
+    }
+   
+    public T SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    {
+        if (!poolDictionary.ContainsKey(tag))
+        {
+            return null;
+        }
+      
+        T objectToSpawn = poolDictionary[tag].Dequeue();
+        objectToSpawn.gameObject.SetActive(true);
+
+        var transform1 = objectToSpawn.transform;
+        transform1.position = position;
+        transform1.rotation = rotation;
+
+        poolDictionary[tag].Enqueue(objectToSpawn);
+        return objectToSpawn;
+    }
+
+    public void Despawn(T objectToDespawn)
+    {
+        objectToDespawn.gameObject.SetActive(false);
+    }
+}
+
+
+[Serializable]
+public class Pool<T>
+{
+    public string tag;
+    public T prefab;
+    public int poolSize;
+}

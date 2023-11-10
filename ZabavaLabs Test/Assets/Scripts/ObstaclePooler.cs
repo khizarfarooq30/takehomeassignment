@@ -28,10 +28,5 @@ public class ObstaclePooler : PoolManager<Obstacle>
     public void Remove(Obstacle obstacle)
     {
         obstacles.Remove(obstacle);
-
-        if (obstacles.Count == 0)
-        {
-            SpawnLevelObstacles();
-        }
     }
 }

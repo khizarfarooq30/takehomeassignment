@@ -26,12 +26,8 @@ public class PoolManager<T> : MonoBehaviour where T : Component
     [SerializeField] private List<Pool<T>> pools;
     private Dictionary<PoolType, Queue<T>> poolDictionary;
 
-    private void Awake()
-    {
-        _instance = this;
-    }
 
-    private void Start()
+    private void Awake()
     {
         poolDictionary = new Dictionary<PoolType, Queue<T>>();
       

@@ -1,10 +1,10 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Obstacle : MonoBehaviour
 {
     [SerializeField] private PositionResetter positionResetter;
-    [SerializeField] private ObstaclePooler obstaclePooler;
     
     [SerializeField] private float obstacleDespawVal = 0.4f;
     [SerializeField] private float speed = 2f;
@@ -12,29 +12,28 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float minSpeed = 0.6f;
     [SerializeField] private float maxSpeed = 2f;
     
-    private PoolManager<Obstacle> obstaclePoolerManager => PoolManager<Obstacle>.instance;
-   
-    private Transform playerTransform;
-    
+    private ObstaclePooler obstaclePooler;
+  
     private Vector3 directionToMove;
 
     private void Awake()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        obstaclePooler = FindObjectOfType<ObstaclePooler>(true);
     }
+
 
     private void Start()
     {
-        var dir = playerTransform.position - transform.position;
-        dir.Normalize();
-        directionToMove = dir;
-
+        float randomVal = Random.Range(-1f, 1f);
+        directionToMove =  new Vector2(randomVal, randomVal).normalized;
+        
+       
         speed = Random.Range(minSpeed, maxSpeed);
     }
 
     private void Update()
     {
-        transform.position += speed * Time.deltaTime * directionToMove;
+        transform.position += speed * Time.deltaTime *directionToMove;
         positionResetter.ResetPositionOutOfBounds();
     }
 
@@ -63,8 +62,15 @@ public class Obstacle : MonoBehaviour
        Obstacle obstacle = 
            obstaclePooler.SpawnFromPool(PoolType.Obstacle, transform.position + 
                                                                Vector3.right * 0.5f, Quaternion.identity);
-       obstacle.transform.localScale = transform.localScale;
-       obstacle.directionToMove = directionToMove + directionToMove * 0.5f;
+
+       obstacle.transform.localScale = scale;
+       
+       float randomVal = Random.Range(-1f, 1f);
+       directionToMove =  new Vector2(randomVal, randomVal).normalized;
+
+
+       float speedRand = Random.Range(minSpeed, maxSpeed);
+       obstacle.speed = speedRand;
     }
 }
 

@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class PositionResetter : MonoBehaviour
 {
-    private Camera mainCam;
     [SerializeField] private float offset = 5f;
 
+    private Camera mainCam;
+    
     private void Awake()
     {
         mainCam = Camera.main;
@@ -15,8 +16,6 @@ public class PositionResetter : MonoBehaviour
         // When go out of screen, warp to the other side
         Vector3 pos = transform.position;
         Vector3 worldToScreenPoint = mainCam.WorldToScreenPoint(pos);
-        
-        Debug.Log(worldToScreenPoint);
         
         if (worldToScreenPoint.y > Screen.height + offset)
         {

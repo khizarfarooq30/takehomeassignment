@@ -4,6 +4,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
+    [SerializeField] private float bulletDespawnTimer;
+    float timer;
+    
     PoolManager<Bullet> bulletPool => PoolManager<Bullet>.instance;
 
     private Rigidbody2D rb;
@@ -15,8 +18,21 @@ public class Bullet : MonoBehaviour
         mainCam = Camera.main;
     }
 
+    private void OnEnable()
+    {
+        timer = bulletDespawnTimer;
+    }
+
     private void Update()
     {
+        timer -= Time.deltaTime;
+        
+        if (timer <= 0f)
+        {
+            bulletPool.Despawn(this);
+        }
+        
+        
         var currentScreenPos = mainCam.WorldToScreenPoint(transform.position);
 
         if (currentScreenPos.x > Screen.width || currentScreenPos.x < 0f ||

@@ -5,12 +5,15 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float bulletDespawnTimer;
-    float timer;
+    private float timer;
     
-    PoolManager<Bullet> bulletPool => PoolManager<Bullet>.instance;
+    private GameManager gameManager => GameManager.instance;
+    private AudioManager audioManager => AudioManager.instance;
+    private PoolManager<Bullet> bulletPool => PoolManager<Bullet>.instance;
 
     private Rigidbody2D rb;
-    Camera mainCam;
+    private Camera mainCam;
+    
   
     private void Awake()
     {
@@ -32,7 +35,6 @@ public class Bullet : MonoBehaviour
             bulletPool.Despawn(this);
         }
         
-        
         var currentScreenPos = mainCam.WorldToScreenPoint(transform.position);
 
         if (currentScreenPos.x > Screen.width || currentScreenPos.x < 0f ||
@@ -40,7 +42,6 @@ public class Bullet : MonoBehaviour
         {
             bulletPool.Despawn(this);
         }
-        
     }
 
     public void Shoot(Vector3 direction)
@@ -53,8 +54,10 @@ public class Bullet : MonoBehaviour
     {
         if (other.TryGetComponent(out Obstacle obstacles))
         {
+            audioManager.Play(SoundType.Damage);
             bulletPool.Despawn(this);
             obstacles.SplitOrDestroy();
+            gameManager.ShootObstacle();
         }
     }
 }

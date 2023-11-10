@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Poke API.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Aestroids Clone.unity
+    guid: e1a5fcc3dbbc84be48b3d2fd3155f13c
   m_configObjects: {}

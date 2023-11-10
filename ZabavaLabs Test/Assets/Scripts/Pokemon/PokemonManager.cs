@@ -21,15 +21,12 @@ public class PokemonManager : MonoBehaviour
     {
         for (int id = startID; id <= endID; id++)
         {
-            PokemonInfo pokemonInfo = Instantiate(pokemonInfoTemplate, holder);
-            pokemonInfo.gameObject.SetActive(true);
-            
             string pokemonNameOrId = id.ToString(); 
-            yield return StartCoroutine(GetPokemonData(POKEMON_URL + pokemonNameOrId + "/", pokemonInfo));
+            yield return StartCoroutine(GetPokemonData(POKEMON_URL + pokemonNameOrId + "/"));
         }
     }
 
-    private IEnumerator GetPokemonData(string url, PokemonInfo pokeInfo)
+    private IEnumerator GetPokemonData(string url)
     {
         var getRequest = Request(url);
         yield return getRequest.SendWebRequest();
@@ -51,8 +48,8 @@ public class PokemonManager : MonoBehaviour
         var pokemonSpriteTexture = DownloadHandlerTexture.GetContent(pokemonTextureRequest);
         var pokemonSpriteRect = new Rect(0, 0, pokemonSpriteTexture.width, pokemonSpriteTexture.height);
         var pokemonSprite = Sprite.Create(pokemonSpriteTexture, pokemonSpriteRect, Vector2.zero);
-
-        pokeInfo.SetPokemonInfo(deserealizedPokemonData.name, deserealizedPokemonData.weight, pokemonSprite);
+        
+        InitPokemonUI(deserealizedPokemonData, pokemonSprite);
     }
 
     private UnityWebRequest Request(string path)
@@ -64,6 +61,15 @@ public class PokemonManager : MonoBehaviour
 
         return request;
     }
+    
+    
+    private void InitPokemonUI(PokemonData deserealizedPokemonData, Sprite pokemonSprite)
+    {
+        PokemonInfo pokemonInfo = Instantiate(pokemonInfoTemplate, holder);
+        pokemonInfo.gameObject.SetActive(true);
+        pokemonInfo.SetPokemonInfo(deserealizedPokemonData.name, deserealizedPokemonData.weight, pokemonSprite);
+    }
+
 }
 
 [System.Serializable]

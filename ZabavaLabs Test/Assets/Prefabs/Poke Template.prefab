@@ -197,7 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.24630654, g: 0.28005448, b: 0.38679248, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -225,9 +225,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b244abb1a44497db32ddb7f083c625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 5563725074203340321}
   pokemonName: {fileID: 3455760298637097112}
   pokemonWeight: {fileID: 4310461595669569120}
   pokemonImage: {fileID: 8763069477067286041}
+  duration: 0.3
+  ease: 0
 --- !u!1 &5786375589904308813
 GameObject:
   m_ObjectHideFlags: 0

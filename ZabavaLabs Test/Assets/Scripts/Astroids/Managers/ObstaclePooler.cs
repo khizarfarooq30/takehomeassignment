@@ -44,7 +44,7 @@ public class ObstaclePooler : PoolManager<Obstacle>
 
         if (obstacles.Count == 0)
         {
-            Debug.Log("Wave ended!");
+            GameManager.instance.GameWin();
         }
     }
 }

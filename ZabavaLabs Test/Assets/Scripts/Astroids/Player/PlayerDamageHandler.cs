@@ -46,7 +46,10 @@ public class PlayerDamageHandler : MonoBehaviour
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
+                playerController.RestrictControls(true);
+                gameObject.SetActive(false);
                 gameManager.GameOver();
+                return;
             }
              
             // disable player sprite for 0.7 seconds and reset player position
@@ -57,7 +60,6 @@ public class PlayerDamageHandler : MonoBehaviour
     IEnumerator ResetPlayer()
     {
         playerController.RestrictControls(true);
-        
         playerController.ResetPlayer();
         yield return new WaitForSeconds(0.7f);
         playerSprite.enabled = true;

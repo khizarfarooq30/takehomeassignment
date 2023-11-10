@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public Action OnShootObstacle;
     public Action OnGameOver;
+    public Action OnGameWin;
 
     private void Awake()
     {
@@ -32,5 +33,10 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         OnGameOver?.Invoke();
+    }
+    
+    public void GameWin()
+    {
+        OnGameWin?.Invoke();
     }
 }
